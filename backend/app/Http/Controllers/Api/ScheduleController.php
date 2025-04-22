@@ -25,9 +25,8 @@ class ScheduleController extends Controller
         //
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'date' => 'required|date',
+            'start_datetime' => 'required',
+            'end_datetime' => 'required',
         ]);
 
         return Schedule::create($validated);
@@ -49,9 +48,8 @@ class ScheduleController extends Controller
         //
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'date' => 'required|date',
+            'start_datetime' => 'required',
+            'end_datetime' => 'required',
         ]);
         $schedule = Schedule::findOrFail($id);
         $schedule->update($validated);
