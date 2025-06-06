@@ -1,0 +1,78 @@
+.schedule-list{
+    background-color:white;
+    margin:20px 10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    padding:10px;
+    padding-bottom:20px;
+    border-radius:10px;
+}
+.schedules{
+    margin-left:10px;
+    font-size:17px;
+}
+.schedule-list-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.new-schedule{
+    background-color:#05b6a4;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:10px;
+    box-shadow: 0 2px 0 #058175;
+    margin-bottom:5px;
+}
+.new-schedule:hover{
+    transform: translateY(2px);
+    box-shadow: none;
+}
+.schedule-item{
+    display:flex;
+    box-shadow:0.5px 0.5px 2px gray;
+    border-radius:10px;
+
+}
+.schedule-date{
+    margin-right:10px;
+    font-size:18px;
+    font-weight:600;
+    margin-left:15px;
+    min-width:100px;
+}
+.schedule-center{
+    margin-left:10px;
+    margin-top:13px;
+    min-width:100px;
+}
+.schedule-title{
+    font-size:16px;
+    font-weight:500;
+    padding-bottom:0px;
+    margin-bottom:0px;
+    margin-top:5px;
+}
+.schedule h3{
+    margin-bottom:8px;
+}
+.schedule-center p{
+    margin-top:5px;
+    font-size:13px;
+    
+}
+.schedule-buttons{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    margin-right:50px;
+}
+.delete-button{
+    width:20px;
+    height:20px;
+}
+.delete-button:hover{
+    color:red;
+}
