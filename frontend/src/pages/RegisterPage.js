@@ -42,7 +42,7 @@ const RegisterPage = ()=>{
                     const errors = err.response.data;
                     let errorMessages = "";
                     for (const key in errors){
-                        if(errors.hasOwnProPerty(key)){
+                        if(errors.hasOwnProperty(key)){
                             errorMessages += `${errors[key].join(", ")}\n`;
                         }
                     }
