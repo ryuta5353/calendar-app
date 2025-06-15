@@ -13,5 +13,10 @@ class Schedule extends Model
         'title',
         'start_datetime',
         'end_datetime',
+        "user_id",
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

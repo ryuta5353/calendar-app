@@ -5,16 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Schedule;
+use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('jwt.auth');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
-        return Schedule::all();
+        $schedules = Auth::user()->schedules()->get();
+        return response()->json($schedules);
     }
 
     /**
@@ -23,13 +29,17 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         //
-        $validated = $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'start_datetime' => 'required',
             'end_datetime' => 'required',
         ]);
 
-        return Schedule::create($validated);
+        $validatedData["user_id"] = Auth::id();
+
+        $schedule=Schedule::create($validatedData);
+
+        return response()->json($schedule,201);
     }
 
     /**
@@ -38,6 +48,9 @@ class ScheduleController extends Controller
     public function show(string $id)
     {
         //
+        $schedule = Auth::user()->schedules()->findOrFail($id);
+
+        return response()->json($schedule);
     }
 
     /**
@@ -46,13 +59,16 @@ class ScheduleController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        $validated = $request->validate([
+
+        $schedule = Auth::user()->schedules()->findOrFail($id);
+
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'start_datetime' => 'required',
-            'end_datetime' => 'required',
+            'start_datetime' => 'required | date',
+            'end_datetime' => 'required | date',
         ]);
-        $schedule = Schedule::findOrFail($id);
-        $schedule->update($validated);
+        
+        $schedule->update($validatedData);
         return response()->json($schedule);
     }
 
@@ -62,8 +78,10 @@ class ScheduleController extends Controller
     public function destroy(string $id)
     {
         //
-        $schedule = Schedule::findOrFail($id);
+        $schedule = Auth::user()->schedules()->findOrFail($id);
+
         $schedule->delete();
-        return response()->json(['message' => 'Schedule deleted successfully'], 200);
+
+        return response()->json(null,204);
     }
 }

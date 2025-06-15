@@ -1,34 +1,31 @@
-export const fetchSchedules = async () => {
-    const res = await fetch('http://localhost:8000/api/schedules');
+import axiosInstance from "./axiosConfig";
 
-    if (!res.ok) {
-        throw new Error('Network response was not ok' + res.statusText);
+export const fetchSchedules = async()=>{
+    try{
+        const response = await axiosInstance.get("/schedules");
+        return response.data;
+    }catch(error){
+        console.error("スケジュールの取得に失敗しました:",error);
+        throw error;
     }
+}
 
-    return res.json();
-};
-
-export const createSchedule = async (newSchedule)=>{
-    const res = await fetch('http://localhost:8000/api/schedules',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify(newSchedule)
-    });
-
-    if(!res.ok){
-        throw Error('スケジュールの追加に失敗')
+export const createSchedule = async(newSchedule)=>{
+    try{
+        const response = await axiosInstance.post("/schedules",newSchedule);
+        return response.data;
+    }catch(error){
+        console.error("スケジュールの追加に失敗しました:",error);
+        throw error;
     }
-    return res.json();
 }
 
 export const deleteSchedule = async(id)=>{
-    const res = await fetch(`http://localhost:8000/api/schedules/${id}`,{
-        method:'DELETE'
-    });
-    if(!res.ok){
-        throw Error('スケジュール削除に失敗しました');
+    try{
+        const reponse = await axiosInstance.delete(`/schedules/${id}`);
+        return reponse.data;
+    }catch(error){
+        console.error("スケジュール削除に失敗しました",error);
+        throw error;
     }
-    return res.json();
-}
+};

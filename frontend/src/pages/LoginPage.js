@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import useNavigate from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { loginUser } from "../api/authApi";
 
 const LoginPage =()=>{
@@ -10,7 +10,7 @@ const LoginPage =()=>{
     const [successMessage, setSuccessMessage] = useState('');
 
 
-    
+    const navigate = useNavigate();
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -27,11 +27,14 @@ const LoginPage =()=>{
             console.log("ログイン成功")
             setSuccessMessage("ログインが成功しました")
 
+            localStorage.setItem("access_token",response.access_token);
+            navigate("/");
+
 
         }catch(err){
             console.error("ログインエラー",err)
 
-            if(err.reponse){
+            if(err.response){
                 if(err.response.status === 422){
                     const errors = err.response.data;
                     let errorMessages = "";

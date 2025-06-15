@@ -1,18 +1,30 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import "./ScheduleList.css";
 import { deleteSchedule } from '../api/scheduleApi';
 import { FaTrash } from 'react-icons/fa';
 import Modal from './Modal';
 import AddSchedulePage from '../pages/AddSchedulePage';
 
-const ScheduleList = ({ schedules }) => {
-    const [scheduleList, setScheduleList] = useState(schedules);
+const ScheduleList = ({ schedules,refetchSchedules }) => {
+    
     const [isModalOpen, setIsModalOpen] = useState(false); // モーダル表示用の状態
     
+    const [scheduleList,setScheduleList] = useState(schedules || []);
+    useEffect(()=>{
+      setScheduleList(schedules || []);
+    },[schedules]);
+
     const handleDelete = async(id) => {
       try {
         await deleteSchedule(id);
-        setScheduleList(scheduleList.filter(schedule => schedule.id !== id));
+
+        if(refetchSchedules){
+          refetchSchedules();
+        }else{
+          setScheduleList(scheduleList.filter(schedule => schedule.id !== id));
+        }
+        alert("スケジュールを削除しました!")
+        
       } catch(error) {
         console.error("削除に失敗しました", error);
       }
@@ -30,8 +42,13 @@ const ScheduleList = ({ schedules }) => {
     
     // スケジュールが追加されたときのコールバック
     const onScheduleAdded = (newSchedule) => {
-      setScheduleList([...scheduleList, newSchedule]);
+      
       closeModal();
+      if(refetchSchedules){
+        refetchSchedules();
+      }else{
+        setScheduleList([...scheduleList, newSchedule]);
+      }
     };
   
     if (!scheduleList || scheduleList.length === 0) {
